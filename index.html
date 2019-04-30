@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sudoku</title>
+	<link rel="stylesheet" type="text/css" href="./index.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	<div id="sudokuGame"> 
+		<div v-if="!lockSudoku && !sudokuComplete">
+			<timer-component ref="timerComponent"></timer-component>
+			<div class="sudoku-board">
+				<div class="sudoku-row" v-for="(row, i) in numbers">
+					<template v-for="(number, j) in row" v-if="number.number">
+						<input v:bind:readonly="number.readOnly" v-bind:class="{ 'correct-input': !number.readOnly, bold: number.readOnly }" class="sudoku-number" v-bind:value="number.number">
+					</template>
+					<!-- <template v-if="number.number">
+						<input type="text" class="sudoku-number correct-input" v-bind:row="i" v-bind:col="j" @change="_checkValidInput">
+					</template> -->
+					<input v-else class="sudoku-number light" type="text" v-bind:row="i" v-bind:col="j" @change="_checkValidInput">	
+				</div>
+			</div>
+		</div>
+		<div v-if="lockSudoku">
+			<button onclick="window.location.reload()">Reset Puzzle</button>
+		</div>
+		<div v-if="sudokuComplete">
+			<center><h2> Well Done! </h2><h3>It took you {{timeTaken.hours}} hours {{timeTaken.minutes}} minutes and {{timeTaken.seconds}} seconds to complete the puzzle</center>
+		</div>
+		<br>
+			<div v-if="!sudokuComplete">
+				<h2>No. of Errors left = {{_errorsLeft}}</h2>
+				<label>
+					Max Wrong Answer
+				<input type="number" name="" v-bind:value="maxErrors" min="0" @change="_checkIfMaxErrorsDone">
+				</label>
+			</div>
+	</div>
+</body>
+<script type="text/javascript" src="./index.vue"></script>
+</html>
